@@ -6,7 +6,7 @@ const AudioVisualization = () => {
   const [startBtnDisabled, setStartBtnDisabled] = useState(true);
   const [stopBtnDisabled, setStopBtnDisabled] = useState(true);
   const [file, setFile] = useState(null);
-  const { currentTheme, availableThemes, setCurrentTheme, visualize } =
+  const { availableThemes, setCurrentTheme, visualize } =
     useTheme();
   const [selectedButton, setSelectedButton] = useState(availableThemes.plain);
   const canvas = useRef(null);
