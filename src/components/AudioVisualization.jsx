@@ -2,11 +2,13 @@ import { useRef, useState } from "react";
 import useTheme from "../hooks/useTheme";
 
 const AudioVisualization = () => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState("Press start to continue");
   const [startBtnDisabled, setStartBtnDisabled] = useState(true);
   const [stopBtnDisabled, setStopBtnDisabled] = useState(true);
   const [file, setFile] = useState(null);
-  const {setCurrentTheme, visualize} = useTheme();
+  const { currentTheme, availableThemes, setCurrentTheme, visualize } =
+    useTheme();
+  const [selectedButton, setSelectedButton] = useState(availableThemes.plain);
   const canvas = useRef(null);
   const source = useRef(null);
   const jsNode = useRef(null);
@@ -77,37 +79,63 @@ const AudioVisualization = () => {
   return (
     <div>
       <h1>Audio file analyzer</h1>
-      <div>
-        Theme: 
-        <select onChange={(e) => {
-          setCurrentTheme(e.target.value);
-        }}>
-          <option>plain</option>
-          <option>colorful</option>
-        </select>
-      </div>
-      <div>
-        <input type="file" onChange={uploadFile} />
-      </div>
-      <canvas
-        width="1024"
-        height="256"
-        ref={canvas}
-        style={{ backgroundColor: "black" }}
-      ></canvas>
+      {!file && (
+        <div>
+          <h4>Please select an audio file</h4>
+          <input type="file" onChange={uploadFile} />
+        </div>
+      )}
+      {file && (
+        <div>
+          <div>
+            <span>File: {file.name} </span>
+            <button
+              onClick={() => {
+                setFile(null);
+                handleStop();
+              }}
+            >
+              change
+            </button>
+          </div>
+          <div>
+            Themes:
+            {Object.keys(availableThemes).map((theme) => (
+              <button
+                key={theme}
+                onClick={() => {
+                  setCurrentTheme(theme);
+                  setSelectedButton(theme);
+                }}
+                style={{
+                  backgroundColor: selectedButton === theme ? "yellow" : "gray",
+                }}
+              >
+                {theme}
+              </button>
+            ))}
+          </div>
+          <canvas
+            width="1024"
+            height="256"
+            ref={canvas}
+            style={{ backgroundColor: "black" }}
+          ></canvas>
 
-      <div>
-        <button onClick={handleStart} disabled={startBtnDisabled}>
-          Start
-        </button>
-        &nbsp; &nbsp;
-        <button onClick={handleStop} disabled={stopBtnDisabled}>
-          Stop
-        </button>
-        <br />
-        <br />
-        <output>{message}</output>
-      </div>
+          <div>
+            <button onClick={handleStart} disabled={startBtnDisabled}>
+              Start
+            </button>
+            &nbsp; &nbsp;
+            <button onClick={handleStop} disabled={stopBtnDisabled}>
+              Stop
+            </button>
+            <br />
+            <br />
+            <output>{message}</output>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

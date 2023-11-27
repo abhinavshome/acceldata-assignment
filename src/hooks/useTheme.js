@@ -47,7 +47,9 @@ const useTheme = () => {
 
     return {
         visualize,
-        setCurrentTheme
+        setCurrentTheme,
+        availableThemes,
+        currentTheme: theme.current
     }
 }
 
