@@ -3,9 +3,9 @@ const ThemeService = {
         plain: 'plain', 
         colorful: 'colorful'
     },
-    currentTheme: 'default',
-    visualize: (theme, canvas, amplitudeArray) => {
-        this[theme](canvas, amplitudeArray)
+    currentTheme: 'plain',
+    visualize: (canvas, amplitudeArray) => {
+        ThemeService[ThemeService.currentTheme](canvas, amplitudeArray)
     },
     plain: (canvas, amplitudeArray) => {
         // Draw the amplitude inside the canvas

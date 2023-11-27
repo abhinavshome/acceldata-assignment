@@ -69,7 +69,7 @@ const AudioVisualization = () => {
     if (audioContext.state === "running") {
       // Draw the time domain in the canvas
       requestAnimationFrame(() => {
-        ThemeService[theme](canvas, amplitudeArray);
+        ThemeService.visualize(canvas, amplitudeArray);
       });
     }
   };
@@ -80,7 +80,7 @@ const AudioVisualization = () => {
       <div>
         Theme: 
         <select onChange={(e) => {
-          setTheme(e.target.value);
+          ThemeService.currentTheme = e.target.value;
         }}>
           <option>plain</option>
           <option>colorful</option>
