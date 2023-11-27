@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
-import ThemeService from "../services/ThemeService";
+import useTheme from "../hooks/useTheme";
 
 const AudioVisualization = () => {
   const [message, setMessage] = useState("");
   const [startBtnDisabled, setStartBtnDisabled] = useState(true);
   const [stopBtnDisabled, setStopBtnDisabled] = useState(true);
   const [file, setFile] = useState(null);
+  const {setCurrentTheme, visualize} = useTheme();
   const canvas = useRef(null);
   const source = useRef(null);
   const jsNode = useRef(null);
@@ -68,7 +69,7 @@ const AudioVisualization = () => {
     if (audioContext.state === "running") {
       // Draw the time domain in the canvas
       requestAnimationFrame(() => {
-        ThemeService.visualize(canvas, amplitudeArray);
+        visualize(canvas, amplitudeArray);
       });
     }
   };
@@ -79,7 +80,7 @@ const AudioVisualization = () => {
       <div>
         Theme: 
         <select onChange={(e) => {
-          ThemeService.currentTheme = e.target.value;
+          setCurrentTheme(e.target.value);
         }}>
           <option>plain</option>
           <option>colorful</option>
